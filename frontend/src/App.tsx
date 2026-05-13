@@ -4,6 +4,8 @@ import Register from './pages/Register/Register'
 import Unauthorized from './pages/Unauthorized/Unauthorized'
 import PrivateRoute from './guards/PrivateRoute'
 import Dashboard from './pages/Dashboard/Dashboard'
+import Episodes from './pages/Episodes/Episodes'
+import Locations from './pages/Locations/Locations'
 
 const App = () => {
   return (
@@ -36,7 +38,7 @@ const App = () => {
         path="/episodes"
         element={
           <PrivateRoute>
-            <div>Episodes (próximamente)</div>
+            <Episodes />
           </PrivateRoute>
         }
       />
@@ -45,7 +47,7 @@ const App = () => {
         path="/locations"
         element={
           <PrivateRoute>
-            <div>Locations (próximamente)</div>
+            <Locations />
           </PrivateRoute>
         }
       />
