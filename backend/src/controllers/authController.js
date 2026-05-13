@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename)
 const usersPath = path.join(__dirname, '../data/users.json')
 
 // Lee los usuarios del JSON
-const getUsers = () => {
+const readUsers = () => {
   const data = fs.readFileSync(usersPath, 'utf-8')
   return JSON.parse(data)
 }
@@ -25,7 +25,7 @@ const saveUsers = (users) => {
 export const register = async (req, res) => {
   const { username, password, role } = req.body
 
-  const users = getUsers()
+  const users = readUsers()
   const exists = users.find(u => u.username === username)
 
   if (exists) {
@@ -51,7 +51,7 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   const { username, password } = req.body
 
-  const users = getUsers()
+  const users = readUsers()
   const user = users.find(u => u.username === username)
 
   if (!user) {
@@ -78,4 +78,11 @@ export const login = async (req, res) => {
       role: user.role
     }
   })
+}
+
+//Solo admin, obtener usuarios
+export const getUsers = (req, res) => {
+  const users = readUsers()
+  const safeUsers = users.map(({ password, ...rest }) => rest)
+  res.json(safeUsers)
 }
