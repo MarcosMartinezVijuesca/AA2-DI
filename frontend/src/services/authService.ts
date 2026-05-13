@@ -41,3 +41,15 @@ export const getMe = async (token: string) => {
 
   return response.json()
 }
+
+export const getUsersList = async (token: string) => {
+  const response = await fetch(`${BASE_URL}/users`, {
+    headers: { Authorization: `Bearer ${token}` }
+  })
+
+  if (!response.ok) {
+    throw new Error('Error al cargar los usuarios')
+  }
+
+  return response.json()
+}
