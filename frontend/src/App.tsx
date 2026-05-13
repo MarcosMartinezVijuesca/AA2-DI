@@ -3,6 +3,7 @@ import Login from './pages/Login/Login'
 import Register from './pages/Register/Register'
 import Unauthorized from './pages/Unauthorized/Unauthorized'
 import PrivateRoute from './guards/PrivateRoute'
+import Dashboard from './pages/Dashboard/Dashboard'
 
 const App = () => {
   return (
@@ -17,7 +18,7 @@ const App = () => {
         path="/dashboard"
         element={
           <PrivateRoute>
-            <div>Dashboard (próximamente)</div>
+            <Dashboard />
           </PrivateRoute>
         }
       />
