@@ -14,7 +14,7 @@ const Episodes = () => {
   const [error, setError] = useState<string | null>(null)
   const [search, setSearch] = useState('')
   const [seasonFilter, setSeasonFilter] = useState('')
-  
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,12 +38,19 @@ const Episodes = () => {
 
   const seasons = [...new Set(episodes.map(e => e.episode.slice(0, 3)))]
 
-  const filtered = episodes.filter(e => {
-  const matchesSearch = e.name.toLowerCase().includes(search.toLowerCase())
-  const matchesSeason = seasonFilter ? e.episode.startsWith(seasonFilter) : true
-  return matchesSearch && matchesSeason
-})
-
+  const filtered = episodes
+  .filter(e => {
+    const matchesSearch = e.name.toLowerCase().includes(search.toLowerCase())
+    const matchesSeason = seasonFilter ? e.episode.startsWith(seasonFilter) : true
+    return matchesSearch && matchesSeason
+  })
+  .sort((a, b) => {
+    return sortOrder === 'asc'
+      ? a.name.localeCompare(b.name)
+      : b.name.localeCompare(a.name)
+  })
+console.log('sortOrder:', sortOrder)
+console.log('filtered:', filtered.map(e => e.name))
   return (
     <div className="dashboard">
       <div className="dashboard-header">
@@ -74,7 +81,9 @@ const Episodes = () => {
         <table className="dashboard-table">
           <thead>
             <tr>
-              <th>Nombre</th>
+              <th onClick={() => setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc')}>
+                Nombre {sortOrder === 'asc' ? '↑' : '↓'}
+              </th>
               <th>Episodio</th>
               <th>Fecha de emisión</th>
             </tr>

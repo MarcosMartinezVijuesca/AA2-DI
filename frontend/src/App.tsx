@@ -6,58 +6,30 @@ import PrivateRoute from './guards/PrivateRoute'
 import Dashboard from './pages/Dashboard/Dashboard'
 import Episodes from './pages/Episodes/Episodes'
 import Locations from './pages/Locations/Locations'
+import Navbar from './components/Navbar/Navbar'
+import { useAuth } from './context/AuthContext'
 
 const App = () => {
+  const { state } = useAuth()
+
   return (
-    <Routes>
-      {/* Rutas públicas */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/unauthorized" element={<Unauthorized />} />
+    <div className="app-layout">
+      {state.isAuthenticated && <Navbar />}
+      <div className="app-content">
+        <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
 
-      {/* Rutas privadas */}
-      <Route
-        path="/dashboard"
-        element={
-          <PrivateRoute>
-            <Dashboard />
-          </PrivateRoute>
-        }
-      />
+        <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+        <Route path="/episodes" element={<PrivateRoute><Episodes /></PrivateRoute>} />
+        <Route path="/locations" element={<PrivateRoute><Locations /></PrivateRoute>} />
 
-      <Route
-        path="/characters"
-        element={
-          <PrivateRoute>
-            <div>Characters (próximamente)</div>
-          </PrivateRoute>
-        }
-      />
-
-      <Route
-        path="/episodes"
-        element={
-          <PrivateRoute>
-            <Episodes />
-          </PrivateRoute>
-        }
-      />
-
-      <Route
-        path="/locations"
-        element={
-          <PrivateRoute>
-            <Locations />
-          </PrivateRoute>
-        }
-      />
-
-      {/* Redirige la raíz al login */}
-      <Route path="/" element={<Navigate to="/login" replace />} />
-
-      {/* Ruta no encontrada */}
-      <Route path="*" element={<Navigate to="/login" replace />} />
-    </Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+      </div>
+    </div>
   )
 }
 
