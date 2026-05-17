@@ -14,6 +14,7 @@ const Locations = () => {
   const [error, setError] = useState<string | null>(null)
   const [search, setSearch] = useState('')
   const [typeFilter, setTypeFilter] = useState('')
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,11 +38,17 @@ const Locations = () => {
 
   const types = [...new Set(locations.map(l => l.type))]
 
-  const filtered = locations.filter(l => {
-  const matchesSearch = l.name.toLowerCase().includes(search.toLowerCase())
-  const matchesType = typeFilter ? l.type === typeFilter : true
-  return matchesSearch && matchesType
-})
+  const filtered = locations
+  .filter(l => {
+    const matchesSearch = l.name.toLowerCase().includes(search.toLowerCase())
+    const matchesType = typeFilter ? l.type === typeFilter : true
+    return matchesSearch && matchesType
+  })
+  .sort((a, b) => {
+    return sortOrder === 'asc'
+      ? a.name.localeCompare(b.name)
+      : b.name.localeCompare(a.name)
+  })
 
   return (
     <div className="dashboard">
@@ -74,7 +81,9 @@ const Locations = () => {
         <table className="dashboard-table">
           <thead>
             <tr>
-              <th>Nombre</th>
+               <th onClick={() => setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc')}>
+                Nombre {sortOrder === 'asc' ? '↑' : '↓'}
+              </th>
               <th>Tipo</th>
               <th>Dimensión</th>
             </tr>
