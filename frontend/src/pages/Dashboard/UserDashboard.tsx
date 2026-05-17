@@ -81,7 +81,6 @@ const UserDashboard = () => {
         <h1>Dashboard</h1>
         <div className="dashboard-user">
           <span>👤 {state.user?.username} ({state.user?.role})</span>
-          <button onClick={logout}>Cerrar sesión</button>
         </div>
       </div>
 
